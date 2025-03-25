@@ -23,7 +23,7 @@ public class Person {
     }
 
     public boolean hasAddress() {
-        if (address == null) {
+        if (address == null || address.isEmpty()) {
             return false;
         }
         return true;
@@ -38,6 +38,9 @@ public class Person {
     }
 
     public OptionalInt getAge() {
+        if (age == 0) {
+            return OptionalInt.empty();
+        }
         return OptionalInt.of(age);
     }
 
@@ -58,15 +61,14 @@ public class Person {
 
     @Override
     public String toString() {
-        String agePart = "";
-        String addressPart = "";
-        if (hasAge() && age != 0) {
-            agePart = ", " + getAge().getAsInt() + " г.";
+        StringBuilder sb = new StringBuilder();
+        if (hasAge()) {
+            sb.append(" возраст: ").append(getAge().getAsInt()).append(" г.");
         }
         if (hasAddress()) {
-            addressPart = ", живет в: " + getAddress();
+            sb.append(" место жительства: ").append(getAddress());
         }
-        return getName() + " " + getSurname() + agePart + addressPart;
+        return getName() + " " + getSurname() + sb;
     }
 
     @Override
